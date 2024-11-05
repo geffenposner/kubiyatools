@@ -15,8 +15,8 @@ create_knowledge_tool = Tool(
         Arg(name="description", description="description of the piece of knowledge", required=True),
         Arg(name="tags", description="tags related to the piece of knowledge. multiple tags should be comma separated", required=False),
         Arg(name="content", description="content of the piece of knowledge", required=True),
-        Arg(name="teammates_with_access", description="Kubiya teammates with access to the piece of knowledge", required=True),
-        Arg(name="user_groups_with_access", description="groups of Kubiya users with access to the piece of knowledge", required=True),
+        Arg(name="teammates_with_access", description="Kubiya teammates with access to the piece of knowledge", required=False),
+        Arg(name="user_groups_with_access", description="groups of Kubiya users with access to the piece of knowledge", required=False),
           ],
     on_build="""
 curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1
