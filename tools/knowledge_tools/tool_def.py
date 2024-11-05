@@ -19,6 +19,8 @@ create_knowledge_tool = Tool(
         Arg(name="user_groups_with_access", description="groups of Kubiya users with access to the piece of knowledge", required=False),
           ],
     on_build="""
+apt-get update && apt-get install -y curl > /dev/null
+    
 curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1
 . $HOME/.cargo/env
 
