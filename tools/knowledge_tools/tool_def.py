@@ -21,19 +21,19 @@ create_knowledge_tool = Tool(
     on_build="""
 apt-get update && apt-get install -y curl > /dev/null
     
-curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1
+curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null
 . $HOME/.cargo/env
 
 uv venv > /dev/null 2>&1
-. .venv/bin/activate > /dev/null 2>&1
+. .venv/bin/activate > /dev/null
 
 if [ -f /tmp/requirements.txt ]; then
-    uv pip install -r /tmp/requirements.txt > /dev/null 2>&1
+    uv pip install -r /tmp/requirements.txt > /dev/null
 fi
 """,
     content="""
-. .venv/bin/activate
-python /tmp/main.py "{{ .name }}"
+source .venv/bin/activate
+python /tmp/main.py "{{ .name }}" "{{ .description }}" "{{ .tags }}" "{{ .content }}" "{{ .teammates_with_access }}" "{{ .user_groups_with_access }}"
 """,
     with_files=[
         FileSpec(
