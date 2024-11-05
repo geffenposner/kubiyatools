@@ -66,8 +66,8 @@ if __name__ == "__main__":
     parser.add_argument("description", help="description of the piece of knowledge")
     parser.add_argument("tags", help="tags related to the piece of knowledge. multiple tags should be comma separated")
     parser.add_argument("content", help="content of the piece of knowledge")
-    parser.add_argument("teammates_with_access", help="Kubiya teammates with access to the piece of knowledge")
-    parser.add_argument("user_groups_with_access", help="groups of Kubiya users with access to the piece of knowledge")
+    # parser.add_argument("teammates_with_access", help="Kubiya teammates with access to the piece of knowledge")
+    # parser.add_argument("user_groups_with_access", help="groups of Kubiya users with access to the piece of knowledge")
 
     # Parse command-line arguments
     args = parser.parse_args()
@@ -77,8 +77,10 @@ if __name__ == "__main__":
     description = args.description
     tags = args.tags.split(",") if args.tags else []
     content = args.content
-    teammates_with_access = args.teammates_with_access.split(",") if args.teammates_with_access else ["7ab4303c-f594-4100-a766-d0adfe3dfd2d"]
-    user_groups_with_access = args.user_groups_with_access.split(",") if args.user_groups_with_access else ["a1c68f8f-5090-46a8-9ce0-dd71ac4630f8"]
+    teammates_with_access = ["7ab4303c-f594-4100-a766-d0adfe3dfd2d"]
+    user_groups_with_access = ["a1c68f8f-5090-46a8-9ce0-dd71ac4630f8"]
+    # teammates_with_access = args.teammates_with_access.split(",") if args.teammates_with_access else ["7ab4303c-f594-4100-a766-d0adfe3dfd2d"]
+    # user_groups_with_access = args.user_groups_with_access.split(",") if args.user_groups_with_access else ["a1c68f8f-5090-46a8-9ce0-dd71ac4630f8"]
 
     create_knowledge(
         title=title,
