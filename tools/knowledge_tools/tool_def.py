@@ -27,12 +27,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null
 uv venv > /dev/null 2>&1
 . .venv/bin/activate > /dev/null
 
-if [ -f /tmp/requirements.txt ]; then
-    uv pip install -r /tmp/requirements.txt > /dev/null
-fi
+uv pip install requests > /dev/null
 """,
     content="""
-source .venv/bin/activate
+. .venv/bin/activate
 python /tmp/main.py "{{ .name }}" "{{ .description }}" "{{ .tags }}" "{{ .content }}" "{{ .teammates_with_access }}" "{{ .user_groups_with_access }}"
 """,
     with_files=[
@@ -41,10 +39,10 @@ python /tmp/main.py "{{ .name }}" "{{ .description }}" "{{ .tags }}" "{{ .conten
             content=inspect.getsource(main),
         ),
         # Add any requirements here if needed
-        FileSpec(
-            destination="/tmp/requirements.txt",
-            content="requests==2.32.3",
-        ),
+        # FileSpec(
+        #     destination="/tmp/requirements.txt",
+        #     content="requests==2.32.3",
+        # ),
     ],
     secrets=["geff_test"]
 )
