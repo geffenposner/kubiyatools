@@ -77,8 +77,8 @@ if __name__ == "__main__":
     description = args.description
     tags = args.tags.split(",") if args.tags else []
     content = args.content
-    teammates_with_access = args.teammates_with_access.split(",") if args.teammates_with_access else []
-    user_groups_with_access = args.user_groups_with_access.split(",") if args.user_groups_with_access else []
+    teammates_with_access = args.teammates_with_access.split(",") if args.teammates_with_access else ["7ab4303c-f594-4100-a766-d0adfe3dfd2d"]
+    user_groups_with_access = args.user_groups_with_access.split(",") if args.user_groups_with_access else ["a1c68f8f-5090-46a8-9ce0-dd71ac4630f8"]
 
     create_knowledge(
         title=title,
