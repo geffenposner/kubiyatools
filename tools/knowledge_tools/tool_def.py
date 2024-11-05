@@ -32,6 +32,7 @@ if [ -f /tmp/requirements.txt ]; then
 fi
 """,
     content="""
+. .venv/bin/activate
 python /tmp/main.py "{{ .name }}"
 """,
     with_files=[
