@@ -1,0 +1,98 @@
+{
+  "tools": [
+    {
+      "name": "create_knowledge",
+      "source": null,
+      "alias": null,
+      "description": "Creates a piece of Kubiya knowldege with {content}!",
+      "type": "docker",
+      "content": "\npython /tmp/main.py \"{{ .name }}\"\n",
+      "content_url": null,
+      "args": [
+        {
+          "name": "title",
+          "type": null,
+          "description": "title of the piece of knowledge",
+          "required": true,
+          "default": null,
+          "options": null,
+          "options_from": null
+        },
+        {
+          "name": "description",
+          "type": null,
+          "description": "description of the piece of knowledge",
+          "required": true,
+          "default": null,
+          "options": null,
+          "options_from": null
+        },
+        {
+          "name": "tags",
+          "type": null,
+          "description": "tags related to the piece of knowledge. multiple tags should be comma separated",
+          "required": false,
+          "default": null,
+          "options": null,
+          "options_from": null
+        },
+        {
+          "name": "content",
+          "type": null,
+          "description": "content of the piece of knowledge",
+          "required": true,
+          "default": null,
+          "options": null,
+          "options_from": null
+        },
+        {
+          "name": "teammates_with_access",
+          "type": null,
+          "description": "Kubiya teammates with access to the piece of knowledge",
+          "required": true,
+          "default": null,
+          "options": null,
+          "options_from": null
+        },
+        {
+          "name": "user_groups_with_access",
+          "type": null,
+          "description": "groups of Kubiya users with access to the piece of knowledge",
+          "required": true,
+          "default": null,
+          "options": null,
+          "options_from": null
+        }
+      ],
+      "env": [],
+      "secrets": [
+        "geff_test"
+      ],
+      "dependencies": null,
+      "dependencies_url": null,
+      "openapi": null,
+      "with_files": [
+        {
+          "source": null,
+          "destination": "/tmp/main.py",
+          "content": "import argparse\nimport os\nimport requests\n\ndef create_knowledge(\n        title: str,\n        description: str,\n        tags: list[str],\n        content: str,\n        teammates_with_access: list[str],\n        user_groups_with_access: list[str],\n):\n    print({\n            \"name\": title,\n            \"description\": description,\n            \"labels\": tags,\n            \"content\": content,\n            \"type\": \"knowledge\",\n            \"source\": \"manual\",\n            \"properties\": {},\n            \"supported_agents\": teammates_with_access,\n            \"groups\": user_groups_with_access,\n        })\n\n\n    print(\"Sending request to Kubiya API...\")\n    response = requests.post(\n        'https://api.kubiya.ai/api/v1/knowledge',\n        headers={\n            'Authorization': f'UserKey {os.environ[\"geff_test\"]}',\n            'Content-Type': 'application/json'\n        },\n        json={\n            \"name\": title,\n            \"description\": description,\n            \"labels\": tags,\n            \"content\": content,\n            \"type\": \"knowledge\",\n            \"source\": \"manual\",\n            \"properties\": {},\n            \"supported_agents\": teammates_with_access,\n            \"groups\": user_groups_with_access,\n            \"supported_agents_groups\": [],\n            \"owner\": \"5851e879-552a-4209-bd60-f33f11525d82\",\n            \"uuid\": \"\"\n        }\n    )\n    print(response.json())\n    if response.status_code >= 400:\n        print(f\"Error: {response.status_code} {response.text}\")\n        return\n    \n    base_url = \"https://app.kubiya.ai/knowledge\"\n    try:\n        knowledge_id = response.json()[\"uuid\"]\n        url = f\"{base_url}/{knowledge_id}\"\n        print(\"Knowledge created successfully! Link: \", url)\n    except Exception:\n        print(f\"Knowledge created successfully! You can find it in {base_url}\")\n\n\n\nif __name__ == \"__main__\":\n    parser = argparse.ArgumentParser(description=\"Create a piece of Kubiya knowledge with {content}!\")\n    parser.add_argument(\"title\", help=\"title of the piece of knowledge\")\n    parser.add_argument(\"description\", help=\"description of the piece of knowledge\")\n    parser.add_argument(\"tags\", help=\"tags related to the piece of knowledge. multiple tags should be comma separated\")\n    parser.add_argument(\"content\", help=\"content of the piece of knowledge\")\n    parser.add_argument(\"teammates_with_access\", help=\"Kubiya teammates with access to the piece of knowledge\")\n    parser.add_argument(\"user_groups_with_access\", help=\"groups of Kubiya users with access to the piece of knowledge\")\n\n    # Parse command-line arguments\n    args = parser.parse_args()\n\n    # Get coordinates for the given city\n    title = args.title\n    description = args.description\n    tags = args.tags.split(\",\") if args.tags else []\n    content = args.content\n    teammates_with_access = args.teammates_with_access.split(\",\") if args.teammates_with_access else []\n    user_groups_with_access = args.user_groups_with_access.split(\",\") if args.user_groups_with_access else []\n\n    create_knowledge(\n        title=title,\n        description=description,\n        tags=tags,\n        content=content,\n        teammates_with_access=teammates_with_access,\n        user_groups_with_access=user_groups_with_access,\n    )\n"
+        }
+      ],
+      "with_services": [],
+      "with_git_repo": null,
+      "with_volumes": [],
+      "entrypoint": [],
+      "icon_url": null,
+      "image": "python:3.12",
+      "long_running": false,
+      "on_start": null,
+      "on_build": "\ncurl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null 2>&1\n. $HOME/.cargo/env\n\nuv venv > /dev/null 2>&1\n. .venv/bin/activate > /dev/null 2>&1\n\nif [ -f /tmp/requirements.txt ]; then\n    uv pip install -r /tmp/requirements.txt > /dev/null 2>&1\nfi\n",
+      "on_complete": null,
+      "mermaid": "graph TD\n    %% Styles\n    classDef triggerClass fill:#3498db,color:#fff,stroke:#2980b9,stroke-width:2px,font-weight:bold\n    classDef paramClass fill:#2ecc71,color:#fff,stroke:#27ae60,stroke-width:2px\n    classDef execClass fill:#e74c3c,color:#fff,stroke:#c0392b,stroke-width:2px,font-weight:bold\n    classDef envClass fill:#f39c12,color:#fff,stroke:#f1c40f,stroke-width:2px\n\n    %% Main Components\n    Trigger(\"Trigger\"):::triggerClass\n    Params(\"Parameters\"):::paramClass\n    Exec(\"create_knowledge\"):::execClass\n    Env(\"Environment\"):::envClass\n\n    %% Flow\n    Trigger --> Params --> Exec\n    Env --> Exec\n\n    %% Trigger Options\n    User(\"User\")\n    API(\"API\")\n    Webhook(\"Webhook\")\n    Cron(\"Scheduled\")\n    User --> Trigger\n    API --> Trigger\n    Webhook --> Trigger\n    Cron --> Trigger\n\n    %% Parameters\n    subgraph Parameters[\"Parameters\"]\n        direction TB\n        Param0(\"title (Required)<br/>title of the piece of knowledge\"):::paramClass\n        Param1(\"description (Required)<br/>description of the piece of knowledge\"):::paramClass\n        Param2(\"tags (Optional)<br/>tags related to the piece of knowledge. multiple tags should be comma separated\"):::paramClass\n        Param3(\"content (Required)<br/>content of the piece of knowledge\"):::paramClass\n        Param4(\"teammates_with_access (Required)<br/>Kubiya teammates with access to the piece of knowledge\"):::paramClass\n        Param5(\"user_groups_with_access (Required)<br/>groups of Kubiya users with access to the piece of knowledge\"):::paramClass\n    end\n    Parameters --- Params\n\n    %% Execution\n    subgraph Execution[\"Execution\"]\n        direction TB\n        Code(\"Script: <br/>python /tmp/main.py \\\"{{ .name }}\\\"<br/>...\")\n        Type(\"Type: Docker\")\n        Image(\"Docker Image: python:3.12\")\n    end\n    Execution --- Exec\n\n    %% Environment\n    subgraph Environment[\"Environment\"]\n        direction TB\n        Secrets(\"Secrets:<br/>geff_test\"):::envClass\n    end\n    Environment --- Env\n\n    %% Context Note\n    ContextNote(\"Parameter values can be<br/>fetched from context<br/>based on the trigger\")\n    ContextNote -.-> Params",
+      "workflow": false,
+      "metadata": {}
+    }
+  ],
+  "errors": [],
+  "python_bundle_version": "3.11.10"
+}
