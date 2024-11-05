@@ -80,7 +80,7 @@
         {
           "source": null,
           "destination": "/tmp/requirements.txt",
-          "content": "\nrequests==2.32.3\n"
+          "content": "requests==2.32.3"
         }
       ],
       "with_services": [],

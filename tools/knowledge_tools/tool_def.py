@@ -42,9 +42,7 @@ python /tmp/main.py "{{ .name }}"
         # Add any requirements here if needed
         FileSpec(
             destination="/tmp/requirements.txt",
-            content="""
-requests==2.32.3
-""",
+            content="requests==2.32.3",
         ),
     ],
     secrets=["geff_test"]
