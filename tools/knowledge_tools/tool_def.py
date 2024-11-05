@@ -15,8 +15,8 @@ create_knowledge_tool = Tool(
         Arg(name="description", description="description of the piece of knowledge", required=True),
         Arg(name="tags", description="tags related to the piece of knowledge. multiple tags should be comma separated", required=False),
         Arg(name="content", description="content of the piece of knowledge", required=True),
-        Arg(name="teammates_with_access", description="Kubiya teammates with access to the piece of knowledge", required=False),
-        Arg(name="user_groups_with_access", description="groups of Kubiya users with access to the piece of knowledge", required=False),
+        # Arg(name="teammates_with_access", description="Kubiya teammates with access to the piece of knowledge", required=False),
+        # Arg(name="user_groups_with_access", description="groups of Kubiya users with access to the piece of knowledge", required=False),
           ],
     on_build="""
 apt-get update && apt-get install -y curl > /dev/null
@@ -31,7 +31,7 @@ uv pip install requests > /dev/null
 """,
     content="""
 . .venv/bin/activate
-python /tmp/main.py "{{ .name }}" "{{ .description }}" "{{ .tags }}" "{{ .content }}" "{{ .teammates_with_access }}" "{{ .user_groups_with_access }}"
+python /tmp/main.py "{{ .title }}" "{{ .description }}" "{{ .tags }}" "{{ .content }}"
 """,
     with_files=[
         FileSpec(
