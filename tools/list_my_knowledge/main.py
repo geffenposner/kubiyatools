@@ -24,8 +24,12 @@ def list_my_knowledge():
     data = response.json()
     filtered_data = [item for item in data if item.get('owner') == owner_id]
 
-    print(filtered_data)
-
+    for item in filtered_data:
+            print({
+                "name": item.get("name"),
+                "description": item.get("description"),
+                "uuid": item.get("uuid")
+            })
 
 if __name__ == "__main__":
 
