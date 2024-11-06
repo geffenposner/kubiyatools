@@ -1,10 +1,57 @@
 {
   "tools": [
     {
+      "name": "view_knowledge",
+      "source": null,
+      "alias": null,
+      "description": "View the piece of Kubiya knowledge with {uuid}",
+      "type": "docker",
+      "content": "\n. .venv/bin/activate\npython /tmp/main.py \"{{ .uuid }}\"\n",
+      "content_url": null,
+      "args": [
+        {
+          "name": "uuid",
+          "type": null,
+          "description": "uuid of the piece of knowledge",
+          "required": true,
+          "default": null,
+          "options": null,
+          "options_from": null
+        }
+      ],
+      "env": [],
+      "secrets": [
+        "geff_test"
+      ],
+      "dependencies": null,
+      "dependencies_url": null,
+      "openapi": null,
+      "with_files": [
+        {
+          "source": null,
+          "destination": "/tmp/main.py",
+          "content": "import argparse\nimport os\nimport requests\n\ndef view_knowledge(uuid: str):\n\n    base_url = \"https://api.kubiya.ai/api/v1/knowledge\"\n    knowledge_id = uuid\n    url = f\"{base_url}/{knowledge_id}\"\n\n\n    print(\"Sending request to Kubiya API...\")\n    response = requests.get(\n        url,\n        headers={\n            'Authorization': f'UserKey {os.environ[\"geff_test\"]}',\n            'Content-Type': 'application/json'\n        },\n        json={}\n    )\n    \n    if response.status_code >= 400:\n        print(f\"Error: {response.status_code} {response.text}\")\n        return\n    \n\n    print(response.json())\n\nif __name__ == \"__main__\":\n    parser = argparse.ArgumentParser(description=\"View the piece of Kubiya knowledge with {uuid}\")\n    parser.add_argument(\"uuid\", help=\"uuid of the piece of knowledge\")\n\n    # Parse command-line arguments\n    args = parser.parse_args()\n\n    # Get coordinates for the given city\n    uuid = args.uuid\n    view_knowledge(uuid=uuid)\n"
+        }
+      ],
+      "with_services": [],
+      "with_git_repo": null,
+      "with_volumes": [],
+      "entrypoint": [],
+      "icon_url": null,
+      "image": "python:3.12-slim",
+      "long_running": false,
+      "on_start": null,
+      "on_build": "\napt-get update && apt-get install -y curl > /dev/null\n    \ncurl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null\n. $HOME/.cargo/env\n\nuv venv > /dev/null 2>&1\n. .venv/bin/activate > /dev/null\n\nuv pip install requests > /dev/null\n",
+      "on_complete": null,
+      "mermaid": "graph TD\n    %% Styles\n    classDef triggerClass fill:#3498db,color:#fff,stroke:#2980b9,stroke-width:2px,font-weight:bold\n    classDef paramClass fill:#2ecc71,color:#fff,stroke:#27ae60,stroke-width:2px\n    classDef execClass fill:#e74c3c,color:#fff,stroke:#c0392b,stroke-width:2px,font-weight:bold\n    classDef envClass fill:#f39c12,color:#fff,stroke:#f1c40f,stroke-width:2px\n\n    %% Main Components\n    Trigger(\"Trigger\"):::triggerClass\n    Params(\"Parameters\"):::paramClass\n    Exec(\"view_knowledge\"):::execClass\n    Env(\"Environment\"):::envClass\n\n    %% Flow\n    Trigger --> Params --> Exec\n    Env --> Exec\n\n    %% Trigger Options\n    User(\"User\")\n    API(\"API\")\n    Webhook(\"Webhook\")\n    Cron(\"Scheduled\")\n    User --> Trigger\n    API --> Trigger\n    Webhook --> Trigger\n    Cron --> Trigger\n\n    %% Parameters\n    subgraph Parameters[\"Parameters\"]\n        direction TB\n        Param0(\"uuid (Required)<br/>uuid of the piece of knowledge\"):::paramClass\n    end\n    Parameters --- Params\n\n    %% Execution\n    subgraph Execution[\"Execution\"]\n        direction TB\n        Code(\"Script: <br/>. .venv/bin/activate<br/>python /tmp/main.py \\\"{{ .uui...\")\n        Type(\"Type: Docker\")\n        Image(\"Docker Image: python:3.12-slim\")\n    end\n    Execution --- Exec\n\n    %% Environment\n    subgraph Environment[\"Environment\"]\n        direction TB\n        Secrets(\"Secrets:<br/>geff_test\"):::envClass\n    end\n    Environment --- Env\n\n    %% Context Note\n    ContextNote(\"Parameter values can be<br/>fetched from context<br/>based on the trigger\")\n    ContextNote -.-> Params",
+      "workflow": false,
+      "metadata": {}
+    },
+    {
       "name": "create_knowledge",
       "source": null,
       "alias": null,
-      "description": "Creates a piece of Kubiya knowldege with {content}!",
+      "description": "Creates a piece of Kubiya knowledge with {content}!",
       "type": "docker",
       "content": "\n. .venv/bin/activate\npython /tmp/main.py \"{{ .title }}\" \"{{ .description }}\" \"{{ .tags }}\" \"{{ .content }}\"\n",
       "content_url": null,

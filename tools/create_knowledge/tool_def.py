@@ -9,7 +9,7 @@ create_knowledge_tool = Tool(
     name="create_knowledge",
     type="docker",
     image="python:3.12-slim",
-    description="Creates a piece of Kubiya knowldege with {content}!",
+    description="Creates a piece of Kubiya knowledge with {content}!",
     args=[
         Arg(name="title", description="title of the piece of knowledge", required=True),
         Arg(name="description", description="description of the piece of knowledge", required=True),
