@@ -77,7 +77,7 @@ if __name__ == "__main__":
     description = args.description
     tags = args.tags.split(",") if args.tags else []
     content = args.content
-    teammates_with_access = ["7ab4303c-f594-4100-a766-d0adfe3dfd2d"]
+    teammates_with_access = ["9b2ed7a2-4a4e-48ab-ab8e-38e72699249b"]
     user_groups_with_access = ["a1c68f8f-5090-46a8-9ce0-dd71ac4630f8"]
     # teammates_with_access = args.teammates_with_access.split(",") if args.teammates_with_access else ["7ab4303c-f594-4100-a766-d0adfe3dfd2d"]
     # user_groups_with_access = args.user_groups_with_access.split(",") if args.user_groups_with_access else ["a1c68f8f-5090-46a8-9ce0-dd71ac4630f8"]
