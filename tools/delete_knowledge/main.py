@@ -2,7 +2,7 @@ import argparse
 import os
 import requests
 
-def delete_knowledge(uuid: str):
+def view_knowledge(uuid: str):
 
     base_url = "https://api.kubiya.ai/api/v1/knowledge"
     knowledge_id = uuid
@@ -35,4 +35,4 @@ if __name__ == "__main__":
 
     # Get coordinates for the given city
     uuid = args.uuid
-    delete_knowledge(uuid=uuid)
+    view_knowledge(uuid=uuid)

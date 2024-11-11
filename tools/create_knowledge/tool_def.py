@@ -21,7 +21,7 @@ create_knowledge_tool = Tool(
     on_build="""
 apt-get update && apt-get install -y curl > /dev/null
     
-curl -LsSf https://astral.sh/uv/install.sh | sh > /dev/null
+curl -LsSf https://astral.sh/uv/0.4.30/install.sh | sh > /dev/null
 . $HOME/.cargo/env
 
 uv venv > /dev/null 2>&1
